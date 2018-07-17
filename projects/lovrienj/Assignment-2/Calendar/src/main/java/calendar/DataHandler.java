@@ -129,7 +129,7 @@ public class DataHandler {
             GregorianCalendar lastDay) throws DateOutOfRangeException {
 
             //Internal Diagnositic Messages turned on when true
-            boolean diagnose = false;
+            boolean diagnose = true;
             
             //If the data handler isn't initialized return null
             if (isValid() == false) {
@@ -351,7 +351,7 @@ public class DataHandler {
                 
                 //The user did specify weekly recurrence, so increment the
                 //day until it falls on a weekday the user specified
-                for (int k = 0; k < 7; k++) {
+                for (int k = 0; k < 5; k++) {
                     nextDay.add(nextDay.DAY_OF_MONTH, 1);
                     int newDayOfWeek = nextDay.get(nextDay.DAY_OF_WEEK);
                 
