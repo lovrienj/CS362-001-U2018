@@ -19,6 +19,7 @@ public class DataHandlerTest{
 
   @Test(timeout = 4000)
   public void SaveAppt()  throws Throwable  {
+	  System.out.println("CALENDAR DAYS");
 	  DataHandler testHandler = new DataHandler("myTestFile");
 	  //Creating an valid appt an invalid one
 	  Appt validAppt= new Appt(0, 30, 15, 9, 2018, "Birthday", "It's my big birthday bash!", "wazzah@gmail.com");
@@ -45,7 +46,7 @@ public class DataHandlerTest{
 	  //This output list should match the correct list
 	  List<CalDay>outputList = testHandler.getApptRange(testDayGreg, testDay2Greg);
 	  
-	  //assertEquals(correctList, outputList); TEST FAILS BECAUSE APPT HAS A +1 DAY AND CALDAY HAS +1 MONTH AND DAY
+	  assertEquals(correctList, outputList);
 	  
 	  //Now, to test the delete function
 	  boolean deleted = testHandler.deleteAppt(invalidAppt);
@@ -54,9 +55,10 @@ public class DataHandlerTest{
 	  deleted = testHandler.deleteAppt(validAppt);
 	  assertTrue(deleted);
 	  
-	  outputList = testHandler.getApptRange(testDayGreg, testDay2Greg);
-	  
-	  //assertTrue(outputList.isEmpty()); Not sure why this assert isn't working :(
+	  outputList = testHandler.getApptRange(testDay2Greg, testDayGreg);
+
+	  System.out.println("CALENDAR DAYS");
+	  assertTrue(outputList.isEmpty());
   }
   
   /**
@@ -64,7 +66,7 @@ public class DataHandlerTest{
    * Testing apptRecurence
    */
   @Test(timeout = 4000)
-  public void test01()  throws Throwable  {
+  public void Reccurence()  throws Throwable  {
 		Appt recurTimes = new Appt(1, 30, 15, 9, 2018, "nothing", "nothing", "nothing");
 		recurTimes.setValid();
 		recurTimes.setRecurrence(null, 1, 1, 1);
@@ -77,8 +79,25 @@ public class DataHandlerTest{
 		  
 		  List<CalDay> daysOccurs = testHandler.getApptRange(dayAppt, weekAfter);
 		  
+		  System.out.println("CALENDAR DAYS");
+		  for(int i = 0; i < daysOccurs.size(); i++)
+		  {
+			  System.out.println(daysOccurs.get(i).getFullInfomrationApp(daysOccurs.get(i)));
+		  }
+		  
 		  //With a recurrence of once a week, this list should be longer than 1 because teh range should include at least on recurrence
 		assertTrue(daysOccurs.size() > 1);
+		
+		/*VERSION 2*/
+		//Testing with many different appointments!
+		//Incrementation help from https://stackoverflow.com/questions/3300328/add-1-week-to-a-date-which-way-is-preferred
+		
+		//Testing up to 100 recurrences by week
+		//List<CalDay> output = test.Handler.getApptRange
+		for(int i = 0; i < 100; i++)
+		{
+			for(int j = 0; j < )
+		}
 		
 
   }

@@ -136,7 +136,7 @@ public void ApptCreationAndStartTime()  throws Throwable  {
 @Test(timeout = 4000)
  public void Recurrence()  throws Throwable  {
 
-	Appt recurTimes = new Appt(1, 30, 15, 10, 2018, "Birthday", "It's my big birthday bash!", "wazzah@gmail.com");
+	Appt recurTimes = new Appt(1, 30, 15, 9, 2018, "Birthday", "It's my big birthday bash!", "wazzah@gmail.com");
 	assertFalse(recurTimes.isRecurring());
 	
 	/*Giving recurTimes recurrence */
