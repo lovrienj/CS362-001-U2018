@@ -1,5 +1,5 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
+si * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
@@ -302,45 +302,64 @@ public class UrlValidator implements Serializable {
             return false;
         }
 
+        System.out.println("isValid: Made it past null!");
+        
         // Check the whole url address structure
         Matcher urlMatcher = URL_PATTERN.matcher(value);
         if (!urlMatcher.matches()) {
+            System.out.println("isValid: urlMatcher.matches == false...INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
+        System.out.println("isValid: urlMatcher.matches == true"); //DEBUGGING WITH CONSOLE OUTPUT
 
         String scheme = urlMatcher.group(PARSE_URL_SCHEME);
         if (!isValidScheme(scheme)) {
+            System.out.println("isValid: isValidScheme == false ... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
+        System.out.println("isValid: isValidScheme == true"); //DEBUGGING WITH CONSOLE OUTPUT
 
         String authority = urlMatcher.group(PARSE_URL_AUTHORITY);
 
         if ("http".equals(scheme)) {// Special case - file: allows an empty authority
+            System.out.println("isValid: special case no authority decision tree"); //DEBUGGING WITH CONSOLE OUTPUT
             if (authority != null) {
+                System.out.println("isValid: special case authority is not null"); //DEBUGGING WITH CONSOLE OUTPUT
                 if (authority.contains(":")) { // but cannot allow trailing :
+                    System.out.println("isValid: special case trailing : ....INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
                     return false;
                 }
             }
             // drop through to continue validation
         } else { // not file:
+        	 System.out.println("isValid: scheme != file:"); //DEBUGGING WITH CONSOLE OUTPUT
             // Validate the authority
-            if (!isValidAuthority(authority)) {
+            if (!isValidAuthority(authority)) { 
+            	System.out.println("isValid: authority != valid... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
                 return false;
             }
+        	System.out.println("isValid: authority == valid"); //DEBUGGING WITH CONSOLE OUTPUT
         }
 
         if (!isValidPath(urlMatcher.group(PARSE_URL_PATH))) {
+        	System.out.println("isValid: path != valid... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
+    	System.out.println("isValid: path == valid"); //DEBUGGING WITH CONSOLE OUTPUT
 
         if (!isValidQuery(urlMatcher.group(PARSE_URL_QUERY))) {
+        	System.out.println("isValid: query != valid... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
+    	System.out.println("isValid: query == valid"); //DEBUGGING WITH CONSOLE OUTPUT
 
         if (!isValidFragment(urlMatcher.group(PARSE_URL_FRAGMENT))) {
+        	System.out.println("isValid: fragment != valid... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
+    	System.out.println("isValid: fragment == valid"); //DEBUGGING WITH CONSOLE OUTPUT
 
+    	System.out.println("isValid: Return VALID"); //DEBUGGING WITH CONSOLE OUTPUT
         return true;
     }
 
@@ -355,18 +374,31 @@ public class UrlValidator implements Serializable {
      */
     protected boolean isValidScheme(String scheme) {
         if (scheme == null) {
+        	System.out.println("isValidScheme: scheme == null ... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
+    	System.out.println("isValidScheme: scheme is not null"); //DEBUGGING WITH CONSOLE OUTPUT
 
         // TODO could be removed if external schemes were checked in the ctor before being stored
         if (!SCHEME_PATTERN.matcher(scheme).matches()) {
+        	System.out.println("isValidScheme: SCHEME_PATTERN.matcher(scheme).matches() == false ... INVALID SCHEME"); //DEBUGGING WITH CONSOLE OUTPUT
+            return false;
+        }
+    	System.out.println("isValidScheme: SCHEME_PATTERN.matcher(scheme).matches() == true"); //DEBUGGING WITH CONSOLE OUTPUT
+
+    	//DEBUGGING WITH CONSOLE OUTPUT FOR ALL SCHEMES IN LIST
+    	//this for loop to print set from: https://beginnersbook.com/2014/08/how-to-iterate-over-a-sethashset/
+    	 for (String temp : allowedSchemes) {
+    	        System.out.print(temp + " ");
+    	 }
+    	
+        if (isOff(ALLOW_ALL_SCHEMES) && !allowedSchemes.contains(scheme.toUpperCase(Locale.ENGLISH))) {
+        	System.out.println("isValidScheme: allow all schemes is off and allowedSchemes does not contain"
+        			+ " scheme ... INVALID SCHEME"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
 
-        if (isOff(ALLOW_ALL_SCHEMES) && !allowedSchemes.contains(scheme.toLowerCase(Locale.ENGLISH))) {
-            return false;
-        }
-
+    	System.out.println("isValidScheme: scheme is in allowedSchemes or allow all schemes is on... VALID SCHEME"); //DEBUGGING WITH CONSOLE OUTPUT
         return true;
     }
 
