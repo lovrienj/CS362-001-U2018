@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -153,6 +153,8 @@ public class DomainValidator implements Serializable {
         if (domain == null) {
             return false;
         }
+     
+        
         domain = unicodeToASCII(domain);
         // hosts must be equally reachable via punycode and Unicode;
         // Unicode is never shorter than punycode, so check punycode

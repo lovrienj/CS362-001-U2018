@@ -1,5 +1,5 @@
 /*
-si * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
@@ -298,6 +298,7 @@ public class UrlValidator implements Serializable {
      * @return true if the url is valid.
      */
     public boolean isValid(String value) {
+
         if (value == null) {
             return false;
         }
@@ -334,6 +335,7 @@ public class UrlValidator implements Serializable {
         } else { // not file:
         	 System.out.println("isValid: scheme != file:"); //DEBUGGING WITH CONSOLE OUTPUT
             // Validate the authority
+        	 System.out.println("Authority: " + authority);
             if (!isValidAuthority(authority)) { 
             	System.out.println("isValid: authority != valid... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
                 return false;
@@ -374,31 +376,18 @@ public class UrlValidator implements Serializable {
      */
     protected boolean isValidScheme(String scheme) {
         if (scheme == null) {
-        	System.out.println("isValidScheme: scheme == null ... INVALID"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
-    	System.out.println("isValidScheme: scheme is not null"); //DEBUGGING WITH CONSOLE OUTPUT
 
         // TODO could be removed if external schemes were checked in the ctor before being stored
         if (!SCHEME_PATTERN.matcher(scheme).matches()) {
-        	System.out.println("isValidScheme: SCHEME_PATTERN.matcher(scheme).matches() == false ... INVALID SCHEME"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
-    	System.out.println("isValidScheme: SCHEME_PATTERN.matcher(scheme).matches() == true"); //DEBUGGING WITH CONSOLE OUTPUT
 
-    	//DEBUGGING WITH CONSOLE OUTPUT FOR ALL SCHEMES IN LIST
-    	//this for loop to print set from: https://beginnersbook.com/2014/08/how-to-iterate-over-a-sethashset/
-    	 for (String temp : allowedSchemes) {
-    	        System.out.print(temp + " ");
-    	 }
-    	
         if (isOff(ALLOW_ALL_SCHEMES) && !allowedSchemes.contains(scheme.toUpperCase(Locale.ENGLISH))) {
-        	System.out.println("isValidScheme: allow all schemes is off and allowedSchemes does not contain"
-        			+ " scheme ... INVALID SCHEME"); //DEBUGGING WITH CONSOLE OUTPUT
             return false;
         }
 
-    	System.out.println("isValidScheme: scheme is in allowedSchemes or allow all schemes is on... VALID SCHEME"); //DEBUGGING WITH CONSOLE OUTPUT
         return true;
     }
 
@@ -413,14 +402,17 @@ public class UrlValidator implements Serializable {
      * @return true if authority (hostname and port) is valid.
      */
     protected boolean isValidAuthority(String authority) {
+    	System.out.println("isValid: Return VALID4"); //DEBUGGING WITH CONSOLE OUTPUT
         if (authority == null) {
             return false;
         }
 
+    	System.out.println("isValid: Return VALID5"); //DEBUGGING WITH CONSOLE OUTPUT
         // check manual authority validation if specified
         if (authorityValidator != null && authorityValidator.isValid(authority)) {
             return true;
         }
+    	System.out.println("isValid: Return VALID6"); //DEBUGGING WITH CONSOLE OUTPUT
         // convert to ASCII if possible
         final String authorityASCII = DomainValidator.unicodeToASCII(authority);
 
@@ -429,26 +421,33 @@ public class UrlValidator implements Serializable {
             return false;
         }
 
+    	System.out.println("isValid: Return VALID7"); //DEBUGGING WITH CONSOLE OUTPUT
         // We have to process IPV6 separately because that is parsed in a different group
         String ipv6 = authorityMatcher.group(PARSE_AUTHORITY_IPV6);
         if (ipv6 != null) {
+        	System.out.println("isValid: Return VALID1"); //DEBUGGING WITH CONSOLE OUTPUT
             InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
                 if (!inetAddressValidator.isValidInet6Address(ipv6)) {
                     return false;
                 }
         } else {
+        	System.out.println("isValid: Return VALID2"); //DEBUGGING WITH CONSOLE OUTPUT
             String hostLocation = authorityMatcher.group(PARSE_AUTHORITY_HOST_IP);
             // check if authority is hostname or IP address:
             // try a hostname first since that's much more likely
             DomainValidator domainValidator = DomainValidator.getInstance(isOn(ALLOW_LOCAL_URLS));
+
+        	System.out.println("isValid: Return VALID3"); //DEBUGGING WITH CONSOLE OUTPUT
             if (!domainValidator.isValid(hostLocation)) {
                 // try an IPv4 address
                 InetAddressValidator inetAddressValidator = InetAddressValidator.getInstance();
                 if (!inetAddressValidator.isValidInet4Address(hostLocation)) {
                     // isn't IPv4, so the URL is invalid
+                	System.out.println("isValid: Return VALID12"); //DEBUGGING WITH CONSOLE OUTPUT
                     return false;
                 }
             }
+        	System.out.println("isValid: Return VALID8"); //DEBUGGING WITH CONSOLE OUTPUT
             String port = authorityMatcher.group(PARSE_AUTHORITY_PORT);
             if (port != null && port.length() > 0) {
                 try {
@@ -462,6 +461,7 @@ public class UrlValidator implements Serializable {
             }
         }
 
+    	System.out.println("isValid: Return VALID9"); //DEBUGGING WITH CONSOLE OUTPUT
         String extra = authorityMatcher.group(PARSE_AUTHORITY_EXTRA);
         if (extra != null && extra.trim().length() > 0){
             return false;
