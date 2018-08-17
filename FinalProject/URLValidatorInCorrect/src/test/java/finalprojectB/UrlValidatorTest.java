@@ -37,31 +37,28 @@ public class UrlValidatorTest extends TestCase {
 	   validUrl = "https://www.google.com";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "www.google.com";
+	   validUrl = "https://www.google.com/hithere";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "https:www.google.com/hithere";
+	   validUrl = "http://youtube.com";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "https:www.google.com";
+	   validUrl = "https://youtube.com";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "http:youtube.com";
+	   validUrl = "https://192.168.0.1";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "https:youtube.com";
+	   validUrl = "https://192.168.0.1:1234";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "https://userInfor@hostname:1234";
+	   validUrl = "https://192.168.0.1:1234/path/specification";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "https://userInfor@hostname:1234/path/specification";
+	   validUrl = "https://192.168.0.1:1234/path/specification?query";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
-	   validUrl = "https://userInfor@hostname:1234/path/specification?query";
-	   assertTrue(urlValidator.isValid(validUrl));
-	   
-	   validUrl = "https://userInfor@hostname:1234/path/specification?query#fragment";
+	   validUrl = "https://192.168.0.1:1234/path/specification?query#fragment";
 	   assertTrue(urlValidator.isValid(validUrl));
 	   
 	   /*Testing some invalid urls*/

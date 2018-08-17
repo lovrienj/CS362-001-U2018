@@ -153,6 +153,8 @@ public class DomainValidator implements Serializable {
         if (domain == null) {
             return false;
         }
+     
+        
         domain = unicodeToASCII(domain);
         // hosts must be equally reachable via punycode and Unicode;
         // Unicode is never shorter than punycode, so check punycode
