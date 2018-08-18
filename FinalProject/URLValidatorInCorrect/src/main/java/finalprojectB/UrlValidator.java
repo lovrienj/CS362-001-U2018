@@ -322,7 +322,7 @@ public class UrlValidator implements Serializable {
 
         String authority = urlMatcher.group(PARSE_URL_AUTHORITY);
 
-        if ("http".equals(scheme)) {// Special case - file: allows an empty authority
+        if ("file".equals(scheme)) {// Special case - file: allows an empty authority
             System.out.println("isValid: special case no authority decision tree"); //DEBUGGING WITH CONSOLE OUTPUT
             if (authority != null) {
                 System.out.println("isValid: special case authority is not null"); //DEBUGGING WITH CONSOLE OUTPUT
